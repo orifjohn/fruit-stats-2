@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <table>
+    <thead>
+    <tr>
+      <th>Region</th>
+      <th>Stock count</th>
+      <th>Fruit tons</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ region.name }}</td>
+      <td>{{ region.stock_count }}</td>
+      <td>{{ region.fruit_tons }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Children Regions</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Region</th>
+      <th>Stock count</th>
+      <th>Fruit tons</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for child in children %}
+      <tr>
+        <td><a href="{% url 'region_detail' child.pk %}">{{ child.name }}</a></td>
+        <td>{{ child.stock_count }}</td>
+        <td>{{ child.fruit_tons }}</td>
+      </tr>
+    {% endfor %}
+
+    <div class="pagination">
+  <span class="step-links">
+    {% if children.has_previous %}
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ children.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current-page">{{ regions.number }}</span>
+
+    {% if children.has_next %}
+      <a href="?page={{ children.next_page_number }}">next</a>
+      <a href="?page={{ children.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+  </span>
+    </div>
+
+    </tbody>
+  </table>
+
+
+{% endblock %}

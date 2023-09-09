@@ -1,0 +1,36 @@
+version: '3'
+
+volumes:
+  fruit_stock_system_local_postgres_data: {}
+  fruit_stock_system_local_postgres_data_backups: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: fruit_stock_system_local_django
+    container_name: fruit_stock_system_local_django
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    network_mode: host
+    command: /start
+
+  docs:
+    image: fruit_stock_system_local_docs
+    container_name: fruit_stock_system_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./apps:/app/apps:z
+    ports:
+      - '9000:9000'
+    command: /start-docs
