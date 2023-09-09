@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <table>
+    <thead>
+    <tr>
+      <th>Region</th>
+      <th>Stock count</th>
+      <th>Fruit tons</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for region in regions %}
+      <tr>
+        <td><a href="{% url 'region_detail' region.pk %}">{{ region.name }}</a></td>
+        <td>{{ region.stock_count }}</td>
+        <td>{{ region.fruit_tons }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pagination">
+  <span class="step-links">
+    {% if regions.has_previous %}
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ regions.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current-page">{{ regions.number }}</span>
+
+    {% if regions.has_next %}
+      <a href="?page={{ regions.next_page_number }}">next</a>
+      <a href="?page={{ regions.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+  </span>
+  </div>
+
+{% endblock content %}
